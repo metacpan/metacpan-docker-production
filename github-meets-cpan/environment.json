@@ -1,3 +1,5 @@
 {
-    
+    "DOTCLOUD_DATA_MONGODB_HOST" : "mongodb",
+    "DOTCLOUD_DATA_MONGODB_PORT" : 27017,
+    "GITHUB_TOKEN" : "secret-replace-me"
 }
