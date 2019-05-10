@@ -27,6 +27,7 @@ services:
       - logging.env
     ports:
       - "8100:80"
+    restart: unless-stopped
 
 #               _
 # __      _____| |__
@@ -125,6 +126,7 @@ services:
       - mongo
     ports:
       - "127.0.0.1:${GH_CPAN_SITE_PORT:-3000}:3000"
+    restart: unless-stopped
 
 #        _ _   _           _                           _
 #   __ _(_) |_| |__  _   _| |__    _ __ ___   ___  ___| |_ ___
@@ -240,6 +242,7 @@ services:
     image: mvertes/alpine-mongo:latest
     networks:
       - mongo
+    restart: unless-stopped
 
 #  _   _ _____ _______        _____  ____  _  ______
 # | \ | | ____|_   _\ \      / / _ \|  _ \| |/ / ___|
