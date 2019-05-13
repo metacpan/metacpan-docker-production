@@ -242,6 +242,12 @@ services:
     image: mongo:latest
     networks:
       - mongo
+    healthcheck:
+      interval: 10s
+      timeout: 10s
+      retries: 0
+      start_period: 40s
+      test: echo 'db.runCommand("ping").ok' | mongo mongodb:27017/test --quiet
     restart: unless-stopped
 
 #  _   _ _____ _______        _____  ____  _  ______
