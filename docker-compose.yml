@@ -258,9 +258,9 @@ services:
 #
 
 networks:
-  elasticsearch:
-  database:
-  web:
+  # elasticsearch:
+  # database:
+  # web:
   mongo:
 
 # __     _____  _    _   _ __  __ _____ ____
