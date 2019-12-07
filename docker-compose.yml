@@ -166,19 +166,13 @@ services:
 
   grep:
     image: metacpan/metacpan-grep-front-end:latest
-    build:
-      context: ${MC_CONF_PRIVATE_DIR:-.}/metacpan-grep-front-end
     volumes:
       - type: volume
         source: metacpan_git_shared
         target: /shared/metacpan_git
         read_only: true
-      - type: bind
-        source: ${MC_CONF_PRIVATE_DIR:-.}/metacpan-grep-front-end
-        target: /metacpan-grep-front-end
-        read_only: true
     env_file:
-      - grep.env
+      - grep_metacpan/grep.env
     ports:
       - "127.0.0.1:${GREP_SITE_PORT:-3001}:3000"
     networks:
