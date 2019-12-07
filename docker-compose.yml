@@ -183,6 +183,8 @@ services:
       - "127.0.0.1:${GREP_SITE_PORT:-3001}:3000"
     networks:
       - grep
+    labels:
+      - traefik.http.routers.grep.rule=Host(`grep.metacpan.org`)
 
 #  ____    _  _____  _    ____    _    ____  _____ ____
 # |  _ \  / \|_   _|/ \  | __ )  / \  / ___|| ____/ ___|
