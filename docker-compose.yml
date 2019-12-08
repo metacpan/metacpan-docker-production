@@ -69,25 +69,32 @@ services:
 #   \_/\_/ \___|_.__/
 #
 
-  # web:
-  #   image: metacpan/metacpan-web:latest
-  #   volumes:
-  #     - type: volume
-  #       source: web_carton
-  #       target: /carton
-  #     - type: bind
-  #       source: ./configs/metacpan-web/metacpan_web.conf
-  #       target: /metacpan-web/metacpan_web.conf
-  #       read_only: true
-  #     - type: bind
-  #       source: ./src/metacpan-web
-  #       target: /metacpan-web
-  #       read_only: true
-  #   ports:
-  #     - "5001:5001"
-  #   networks:
-  #     - web
-
+  web:
+    depends_on:
+      - traefik
+    image: metacpan/metacpan-web:latest
+    volumes:
+      - type: volume
+        source: web_carton
+        target: /carton
+      - type: bind
+        source: ./configs/metacpan-web/metacpan_web.conf
+        target: /metacpan-web/metacpan_web.conf
+        read_only: true
+      - type: bind
+        source: ./src/metacpan-web
+        target: /metacpan-web
+        read_only: true
+    ports:
+      - "5001:5001"
+    networks:
+      - web-network
+      - traefik-network
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=traefik-network"
+      - traefik.http.routers.web.rule=Host(`metacpan.org`,`${HOSTNAME}`)
+      - traefik.http.services.web.loadbalancer.server.port=5001
 #              _
 #   __ _ _ __ (_)
 #  / _` | '_ \| |
@@ -320,7 +327,7 @@ services:
 networks:
   # elasticsearch:
   # database:
-  # web:
+  web-network:
   mongo:
   traefik-network:
 
