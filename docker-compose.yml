@@ -213,7 +213,7 @@ services:
       - traefik-network
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.grep.rule=Host(`grep.metacpan.org`,`grep.$HOSTNAME`)"
+      - "traefik.http.routers.grep.rule=Host(`grep.metacpan.org`,`grep.${HOSTNAME}`)"
       - traefik.http.services.grep-web.loadbalancer.server.port=3000
 
 #  ____    _  _____  _    ____    _    ____  _____ ____
