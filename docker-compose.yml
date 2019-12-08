@@ -27,6 +27,8 @@ services:
       - "--api.insecure=false"
       - "--api.dashboard=false"
       - "--providers.docker"
+      # Do not expose containers unless explicitly told so
+      - "--providers.docker.exposedbydefault=false"
     ports:
       # The HTTP port
       - "80:80"
@@ -59,8 +61,7 @@ services:
     ports:
       - "8100:80"
     restart: unless-stopped
-    labels:
-      - "traefik.enable=false"
+
 #               _
 # __      _____| |__
 # \ \ /\ / / _ \ '_ \
@@ -159,8 +160,6 @@ services:
     ports:
       - "127.0.0.1:${GH_CPAN_SITE_PORT:-3000}:3000"
     restart: unless-stopped
-    labels:
-      - "traefik.enable=false"
 
 #        _ _   _           _                           _
 #   __ _(_) |_| |__  _   _| |__    _ __ ___   ___  ___| |_ ___
@@ -189,8 +188,6 @@ services:
         read_only: true
     networks:
       - mongo
-    labels:
-      - "traefik.enable=false"
 
 #   __ _ _ __ ___ _ __
 #  / _` | '__/ _ \ '_ \
@@ -215,6 +212,7 @@ services:
     networks:
       - traefik-network
     labels:
+      - "traefik.enable=true"
       - traefik.http.routers.grep.rule=Host(`grep.metacpan.org`)
       - traefik.http.services.grep-web.loadbalancer.server.port=3000
 
@@ -311,8 +309,7 @@ services:
       start_period: 40s
       test: echo 'db.runCommand("ping").ok' | mongo mongodb:27017/test --quiet
     restart: unless-stopped
-    labels:
-      - "traefik.enable=false"
+
 #  _   _ _____ _______        _____  ____  _  ______
 # | \ | | ____|_   _\ \      / / _ \|  _ \| |/ / ___|
 # |  \| |  _|   | |  \ \ /\ / / | | | |_) | ' /\___ \
