@@ -38,7 +38,7 @@ services:
       - "traefik.http.routers.api.rule=Host(`traefik.metacpan.org`)"
       - "traefik.http.routers.api.service=api@internal"
       - "traefik.http.routers.api.middlewares=auth"
-      - "traefik.http.middlewares.auth.basicauth.users=mcadmin:$xyz$abcd"
+      - "traefik.http.middlewares.auth.basicauth.users=mcadmin:void-for-now"
 #  _                                   _
 # | | ___   __ _ ___ _ __   ___  _   _| |_
 # | |/ _ \ / _` / __| '_ \ / _ \| | | | __|
