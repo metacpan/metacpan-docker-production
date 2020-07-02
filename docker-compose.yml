@@ -24,6 +24,7 @@ services:
       - traefik-network
     # Enables the web UI and tells Traefik to listen to docker
     command:
+      - "--accesslog=true"
       - "--api.insecure=false"
       - "--api.dashboard=false"
       - "--providers.docker"
