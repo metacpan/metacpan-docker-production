@@ -244,7 +244,7 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.hound.rule=Host(`hound.metacpan.org`,`hound.${HOSTNAME}`)"
-      - traefik.http.services.hound.loadbalancer.server.port=3000
+      - traefik.http.services.hound.loadbalancer.server.port=6080
 
 #  ____    _  _____  _    ____    _    ____  _____ ____
 # |  _ \  / \|_   _|/ \  | __ )  / \  / ___|| ____/ ___|
