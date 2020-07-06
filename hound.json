@@ -4,8 +4,7 @@
     "health-check-uri" : "/health",
     "repos" : {
         "Meta-CPAN" : {
-            "url" : "https://github.com/metacpan/metacpan-cpan-extracted.git",
-            "enable-push-updates" : true
+            "url" : "file:///shared/metacpan_git"
         }
     }
 }

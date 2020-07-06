@@ -214,7 +214,7 @@ services:
       - traefik-network
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.grep.rule=Host(`grep.metacpan.org`,`grep.$${HOSTNAME}`)"
+      - "traefik.http.routers.grep.rule=Host(`grep.metacpan.org`,`grep.${HOSTNAME}`)"
       - traefik.http.services.grep-web.loadbalancer.server.port=3000
 
 #  _                           _
@@ -243,7 +243,7 @@ services:
       - traefik-network
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.hound.rule=Host(`hound.metacpan.org`,`hound.$${HOSTNAME}`)"
+      - "traefik.http.routers.hound.rule=Host(`hound.metacpan.org`,`hound.${HOSTNAME}`)"
       - traefik.http.services.hound.loadbalancer.server.port=6080
 
 #  ____    _  _____  _    ____    _    ____  _____ ____
