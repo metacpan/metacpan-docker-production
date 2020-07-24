@@ -70,24 +70,24 @@ services:
 #   \_/\_/ \___|_.__/
 #
 
-  # web:
-  #   image: metacpan/metacpan-web:latest
-  #   volumes:
-  #     - type: volume
-  #       source: web_carton
-  #       target: /carton
-  #     - type: bind
-  #       source: ./configs/metacpan-web/metacpan_web.conf
-  #       target: /metacpan-web/metacpan_web.conf
-  #       read_only: true
-  #     - type: bind
-  #       source: ./src/metacpan-web
-  #       target: /metacpan-web
-  #       read_only: true
-  #   ports:
-  #     - "5001:5001"
-  #   networks:
-  #     - web
+  web:
+    depends_on:
+      - traefik
+    image: metacpan/metacpan-web:latest
+    volumes:
+      - type: bind
+        source: ./configs/metacpan-web/metacpan_web.conf
+        target: /metacpan-web/metacpan_web.conf
+        read_only: true
+    ports:
+      - "5001:5001"
+    restart: unless-stopped
+    networks:
+      - traefik-network
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.web.rule=Host(`web.${HOSTNAME}`,`www.metacpan.org`,`metacpan.org`)"
+      - traefik.http.services.web.loadbalancer.server.port=5001
 
 #              _
 #   __ _ _ __ (_)
