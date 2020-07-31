@@ -76,8 +76,8 @@ services:
     image: metacpan/metacpan-web:latest
     volumes:
       - type: bind
-        source: ./configs/metacpan-web/metacpan_web.conf
-        target: /metacpan-web/metacpan_web.conf
+        source: ./configs/metacpan-web/metacpan_web_local.conf
+        target: /metacpan-web/metacpan_web_local.conf
         read_only: true
     ports:
       - "5001:5001"
