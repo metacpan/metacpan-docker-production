@@ -76,11 +76,10 @@ services:
     image: metacpan/metacpan-web:latest
     volumes:
       - type: bind
-        source: ./configs/metacpan-web/metacpan_web.conf
-        target: /metacpan-web/metacpan_web.conf
+        source: ./configs/metacpan-web/metacpan_web_local.conf
+        target: /metacpan-web/metacpan_web_local.conf
         read_only: true
-    ports:
-      - "5001:5001"
+    command: "plackup --port 5001 -E production"
     restart: unless-stopped
     networks:
       - traefik-network
@@ -228,8 +227,6 @@ services:
       - traefik
     container_name: hound
     image: 'etsy/hound:latest'
-    ports:
-      - 3000:6080
     volumes:
       - type: bind
         source: ./hound.json
