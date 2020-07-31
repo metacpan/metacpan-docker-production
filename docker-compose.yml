@@ -79,6 +79,7 @@ services:
         source: ./configs/metacpan-web/metacpan_web_local.conf
         target: /metacpan-web/metacpan_web_local.conf
         read_only: true
+    command: "plackup --port 5001 -E production"
     restart: unless-stopped
     networks:
       - traefik-network
