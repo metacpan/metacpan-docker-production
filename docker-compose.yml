@@ -35,6 +35,7 @@ services:
       - "80:80"
       # The Web UI (enabled by --api.insecure=true)
       - "8080:8080"
+    restart: unless-stopped
     volumes:
       # So that Traefik can listen to the Docker events
       - /var/run/docker.sock:/var/run/docker.sock
@@ -105,6 +106,7 @@ services:
   #   env_file:
   #     - localapi.env
   #   command: "/wait-for-it.sh ${PGDB} -- ${API_SERVER} ./bin/api.pl"
+  #   restart: unless-stopped
   #   volumes:
   #     - type: volume
   #       source: cpan
@@ -178,6 +180,7 @@ services:
   github-meets-cpan-cron:
     image: metacpan/github-meets-cpan:latest
     command: "/wait-for-it.sh mongodb:27017 -- perl cron/update.pl"
+    restart: unless-stopped
     depends_on:
       - mongodb
       - logspout
@@ -200,6 +203,7 @@ services:
     depends_on:
       - traefik
     image: metacpan/metacpan-grep-front-end:latest
+    restart: unless-stopped
     volumes:
       - type: volume
         source: metacpan_git_shared
@@ -227,6 +231,7 @@ services:
       - traefik
     container_name: hound
     image: 'etsy/hound:latest'
+    restart: unless-stopped
     volumes:
       - type: bind
         source: ./hound.json
