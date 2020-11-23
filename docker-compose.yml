@@ -19,26 +19,34 @@ services:
 
   traefik:
     # The official v2.0 Traefik docker image
-    image: traefik:v2.2
+    image: traefik:v2.3
     networks:
       - traefik-network
     # Enables the web UI and tells Traefik to listen to docker
     command:
+      - "-log.level=DEBUG"
       - "--accesslog=true"
       - "--api.insecure=false"
       - "--api.dashboard=false"
-      - "--providers.docker"
+      - "--providers.docker=true"
       # Do not expose containers unless explicitly told so
       - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.websecure.address=:443"
+      - "--certificatesresolvers.myresolver.acme.httpchallenge=true"
+      - "--certificatesresolvers.myresolver.acme.httpchallenge.entrypoint=web"
+      - "--certificatesresolvers.myresolver.acme.email=noc@metacpan.org"
     ports:
       # The HTTP port
       - "80:80"
+      - "443:443"
       # The Web UI (enabled by --api.insecure=true)
       - "8080:8080"
     restart: unless-stopped
     volumes:
       # So that Traefik can listen to the Docker events
-      - /var/run/docker.sock:/var/run/docker.sock
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+      - "/opt/letsencrypt:/letsencrypt"
     labels:
       - "traefik.http.routers.api.rule=Host(`traefik.metacpan.org`)"
       - "traefik.http.routers.api.service=api@internal"
@@ -86,7 +94,10 @@ services:
       - traefik-network
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.web.rule=Host(`web.${HOSTNAME}`,`www.metacpan.org`,`metacpan.org`)"
+        # - "traefik.http.routers.web.rule=Host(`web.${HOSTNAME}`,`www.metacpan.org`,`metacpan.org`)"
+      - "traefik.http.routers.web.rule=Host(`web.${HOSTNAME}`)"
+      - "traefik.http.routers.web.entrypoints=websecure"
+      - "traefik.http.routers.web.tls.certresolver=myresolver"
       - traefik.http.services.web.loadbalancer.server.port=5001
 
 #              _
@@ -217,8 +228,11 @@ services:
       - traefik-network
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.grep.rule=Host(`grep.metacpan.org`,`grep.${HOSTNAME}`)"
-      - traefik.http.services.grep-web.loadbalancer.server.port=3000
+        # - "traefik.http.routers.grep.rule=Host(`grep.metacpan.org`,`grep.${HOSTNAME}`)"
+      - "traefik.http.routers.grep.rule=Host(`grep.${HOSTNAME}`)"
+      - traefik.http.services.grep.loadbalancer.server.port=3000
+      - "traefik.http.routers.grep.entrypoints=websecure"
+      - "traefik.http.routers.grep.tls.certresolver=myresolver"
 
 #  _                           _
 # | |__   ___  _   _ _ __   __| |
@@ -245,8 +259,11 @@ services:
       - traefik-network
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.hound.rule=Host(`hound.metacpan.org`,`hound.${HOSTNAME}`)"
+        # - "traefik.http.routers.hound.rule=Host(`hound.metacpan.org`,`hound.${HOSTNAME}`)"
+      - "traefik.http.routers.hound.rule=Host(`hound.${HOSTNAME}`)"
       - traefik.http.services.hound.loadbalancer.server.port=6080
+      - "traefik.http.routers.hound.entrypoints=websecure"
+      - "traefik.http.routers.hound.tls.certresolver=myresolver"
 
 #  ____    _  _____  _    ____    _    ____  _____ ____
 # |  _ \  / \|_   _|/ \  | __ )  / \  / ___|| ____/ ___|
