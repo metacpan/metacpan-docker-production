@@ -82,7 +82,7 @@ services:
   web:
     depends_on:
       - traefik
-    image: metacpan/metacpan-web:latest
+    image: metacpan/metacpan-web:staging
     volumes:
       - type: bind
         source: ./configs/metacpan-web/metacpan_web_local.conf
